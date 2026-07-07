@@ -1,29 +1,28 @@
 function BookmarkForm({title,setTitle,url,setUrl,bookmarks,setBookmarks,editingId,setEditingId}) {
-    function addBookmark() {
+    async function addBookmark() {
         if (title.trim() === "" || url.trim() === "") {
             alert("Please Enter Both..!")
             return
         }
 
         if (editingId === null) {
-            const newBookmark = {
-                id: Date.now(),
-                title: title,
-                url: url
-            }
-            setBookmarks([...bookmarks, newBookmark])
-        } else {
-            const updateBookmarks = bookmarks.map(bookmark => {
-                if (bookmark.id === editingId) {
-                    return {
-                        id: bookmark.id,
-                        title: title,
-                        url: url
-                    }
-                }
-                return bookmark
+            await fetch('http://localhost:3000/bookmarks', {
+                method: "POST",
+                body: JSON.stringify({
+                    title: title,
+                    url: url
+                })
             })
-            setBookmarks(updateBookmarks)
+        } else {
+            let id = editingId;
+            await fetch(`http://localhost:3000/bookmarks/${id}`, {
+                method: "PUT",
+                body: JSON.stringify({
+                    id: id,
+                    title: title,
+                    url: url
+                })
+            });
             setEditingId(null)
         }
 

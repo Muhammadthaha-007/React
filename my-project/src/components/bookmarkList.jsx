@@ -6,8 +6,10 @@ function BookmarkList({title,setTitle,url,setUrl,bookmarks,setBookmarks,editingI
         setEditingId(bookmark.id)
     }
 
-    function deleteBookmark(id) {
-        setBookmarks(bookmarks.filter(bookmark => bookmark.id !== id))
+    async function deleteBookmark(id) {
+        await fetch(`http://localhost:3000/bookmarks/${id}`, {
+            method: "delete"
+        })
     }
     return (
         <div className="relative flex flex-col justify-center items-center border-4 border-solid border-black rounded-2xl h-[50vh] w-[60%] mt-7">

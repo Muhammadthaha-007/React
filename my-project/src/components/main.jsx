@@ -5,14 +5,13 @@ import { useState, useEffect } from "react"
 function Bookmark() {
     const [title, setTitle] = useState("")
     const [url, setUrl] = useState("")
-    const [bookmarks, setBookmarks] = useState(JSON.parse(localStorage.getItem("bookmarks")) || [])
+    const [bookmarks, setBookmarks] = useState([])
     const [editingId, setEditingId] = useState(null)
 
     useEffect(() => {
-        localStorage.setItem(
-            "bookmarks",
-            JSON.stringify(bookmarks)
-        );
+        fetch('http://localhost:3000/bookmarks')
+            .then(response => response.json())
+            .then(data => setBookmarks(data));
     }, [bookmarks]);
 
 
