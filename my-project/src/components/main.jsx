@@ -1,18 +1,32 @@
 import BookmarkForm from "./bookmarkForm"
 import BookmarkList from "./bookmarkList"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
+import { useNavigate } from "react-router-dom";
+import { logedInContext } from "../context/context";
 
 function Bookmark() {
+    
+    const { logedIn, setlogedIn } = useContext(logedInContext);
     const [title, setTitle] = useState("")
     const [url, setUrl] = useState("")
     const [bookmarks, setBookmarks] = useState([])
     const [editingId, setEditingId] = useState(null)
 
+    const token = localStorage.getItem("accessToken");
+
+    const navigate = useNavigate();
+    
     useEffect(() => {
+        if (!token) {
+            navigate("/login")
+            return
+        }
+        setlogedIn(true);
         fetch('http://localhost:3000/bookmarks')
             .then(response => response.json())
             .then(data => setBookmarks(data));
-    }, [bookmarks]);
+        
+    }, []);
 
 
     return (
