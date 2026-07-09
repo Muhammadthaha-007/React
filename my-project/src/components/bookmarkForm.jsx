@@ -1,4 +1,4 @@
-function BookmarkForm({title,setTitle,url,setUrl,bookmarks,setBookmarks,editingId,setEditingId}) {
+function BookmarkForm({ title, setTitle, url, setUrl, bookmarks, setBookmarks, editingId, setEditingId }) {
     async function addBookmark() {
         if (title.trim() === "" || url.trim() === "") {
             alert("Please Enter Both..!")
@@ -6,23 +6,41 @@ function BookmarkForm({title,setTitle,url,setUrl,bookmarks,setBookmarks,editingI
         }
 
         if (editingId === null) {
-            await fetch('http://localhost:3000/bookmarks', {
+            let response = await fetch('http://localhost:3000/bookmarks', {
                 method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     title: title,
                     url: url
                 })
             })
+            if (response.ok) {
+                const data = await response.json();
+                setBookmarks([...bookmarks, data])
+            }
         } else {
             let id = editingId;
-            await fetch(`http://localhost:3000/bookmarks/${id}`, {
+            let response = await fetch(`http://localhost:3000/bookmarks/${id}`, {
                 method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     id: id,
                     title: title,
                     url: url
                 })
             });
+            if (response.ok) {
+                const data = await response.json();
+                setBookmarks(
+                    bookmarks.map(
+                        bookmark => bookmark.id === id ? data : bookmark
+                    )
+                )
+            }
             setEditingId(null)
         }
 

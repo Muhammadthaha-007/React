@@ -6,7 +6,7 @@ function Profile() {
     const { logedIn, setlogedIn } = useContext(logedInContext);
     const navigate = useNavigate();
     const [userName, setuserName] = useState("");
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState(null);
     const [isLoad, setIsLoad] = useState(false);
 
     useEffect(() => {

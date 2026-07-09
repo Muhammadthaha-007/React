@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import Footer from './components/footer'
 import Header from './components/header'
-import Bookmark from './components/main'
+import Bookmark from './components/bookmark_main'
 import LoginForm from "./components/logInForm";
 
 function App() {

@@ -1,4 +1,5 @@
-function BookmarkList({title,setTitle,url,setUrl,bookmarks,setBookmarks,editingId,setEditingId}) {
+function BookmarkList({setTitle,setUrl,bookmarks,setBookmarks,setEditingId}) {
+
     function editBookmark(bookmark) {
         setTitle(bookmark.title)
         setUrl(bookmark.url)
@@ -7,9 +8,14 @@ function BookmarkList({title,setTitle,url,setUrl,bookmarks,setBookmarks,editingI
     }
 
     async function deleteBookmark(id) {
-        await fetch(`http://localhost:3000/bookmarks/${id}`, {
+        let response = await fetch(`http://localhost:3000/bookmarks/${id}`, {
             method: "delete"
         })
+        if (response.ok){
+            setBookmarks(
+                prevBookmark => prevBookmark.filter(bookmark => bookmark.id !== id)
+            )
+        }
     }
     return (
         <div className="relative flex flex-col justify-center items-center border-4 border-solid border-black rounded-2xl h-[50vh] w-[60%] mt-7">

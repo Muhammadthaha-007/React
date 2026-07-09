@@ -26,8 +26,7 @@ function Bookmark() {
             .then(response => response.json())
             .then(data => setBookmarks(data));
         
-    }, []);
-
+    },[]);
 
     return (
         <main className="flex flex-col items-center justify-center w-full">
@@ -42,13 +41,10 @@ function Bookmark() {
                 setEditingId={setEditingId}
             />
             <BookmarkList
-                title={title}
                 setTitle={setTitle}
-                url={url}
                 setUrl={setUrl}
                 bookmarks={bookmarks}
                 setBookmarks={setBookmarks}
-                editingId={editingId}
                 setEditingId={setEditingId}
             />
         </main>
