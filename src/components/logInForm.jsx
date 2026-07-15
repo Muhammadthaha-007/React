@@ -5,6 +5,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import useLogin from "../hooks/useLogin";
+
 const loginSchema = z.object({
     userName: z.string().min(3, "username must be at least 3 charectors."),
     password: z.string().min(6, "Password must be at least 6 characters"),
@@ -14,7 +16,8 @@ const loginSchema = z.object({
 function LoginForm() {
     const { logedIn, setlogedIn } = useContext(logedInContext);
     const token = localStorage.getItem("accessToken");
-    const [isLoad, setisLoad] = useState(false);
+
+    const { login, isLoad } = useLogin();
 
     const navigate = useNavigate();
 
@@ -35,19 +38,11 @@ function LoginForm() {
 
     const handleLogin =
         async (formData) => {
-            setisLoad(true);
-            const response = await fetch('https://dummyjson.com/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    username: formData.userName,
-                    password: formData.password,
-                }),
-                credentials: 'include'
-            });
-            setisLoad(false);
 
-            const data = await response.json();
+            const data = await login(
+                formData.userName,
+                formData.password
+            )
 
             if (data.accessToken) {
                 localStorage.setItem("accessToken", data.accessToken);

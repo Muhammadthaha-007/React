@@ -1,4 +1,9 @@
+import useBookmarkApi from "../hooks/useBookmarkApi"
+
+
 function BookmarkList({ bookmarks, setBookmarks, setEditingId,setEditingBookmark }) {
+
+    const { deleteBookmark: removeBookmark } = useBookmarkApi();
 
     function editBookmark(bookmark) {
         setEditingBookmark(bookmark)
@@ -6,10 +11,9 @@ function BookmarkList({ bookmarks, setBookmarks, setEditingId,setEditingBookmark
     }
 
     async function deleteBookmark(id) {
-        let response = await fetch(`http://localhost:3000/bookmarks/${id}`, {
-            method: "delete"
-        })
-        if (response.ok) {
+        const success = await removeBookmark(id);
+
+        if (success) {
             setBookmarks(
                 prevBookmark => prevBookmark.filter(bookmark => bookmark.id !== id)
             )

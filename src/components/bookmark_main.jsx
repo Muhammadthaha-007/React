@@ -1,8 +1,10 @@
 import BookmarkForm from "./bookmarkForm"
 import BookmarkList from "./bookmarkList"
 import { useState, useEffect, useContext } from "react"
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { logedInContext } from "../context/context";
+
+import useBookmarkApi from "../hooks/useBookmarkApi"
 
 function Bookmark() {
     
@@ -13,6 +15,8 @@ function Bookmark() {
 
     const token = localStorage.getItem("accessToken");
 
+    const { getBookmarks } = useBookmarkApi();
+
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -21,10 +25,8 @@ function Bookmark() {
             return
         }
         setlogedIn(true);
-        fetch('http://localhost:3000/bookmarks')
-            .then(response => response.json())
-            .then(data => setBookmarks(data));
-        
+        getBookmarks().then(data => setBookmarks(data));
+
     },[]);
 
     return (
